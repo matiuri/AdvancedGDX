@@ -8,7 +8,7 @@ class ScreenManager(private val game: AdvancedGame) : Disposable {
 	private val map: MutableMap<String, Screen> = HashMap()
 
 	public fun add(key: String, screen: Screen): ScreenManager {
-		if (map.containsKey(key)) throw IllegalArgumentException("The key $key is already in the map")
+		if (map.containsKey(key)) throw IllegalArgumentException("The key $key already exists")
 		map.put(key, screen)
 		return this
 	}
@@ -24,7 +24,7 @@ class ScreenManager(private val game: AdvancedGame) : Disposable {
 			v.load()
 	}
 
-	public fun get(key: String): Screen {
+	public operator fun get(key: String): Screen {
 		if (!map.containsKey(key)) throw IllegalArgumentException("The key $key doesn't exist")
 		return map[key]!!
 	}

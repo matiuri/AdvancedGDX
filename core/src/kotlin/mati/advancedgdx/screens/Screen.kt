@@ -2,7 +2,7 @@ package mati.advancedgdx.screens
 
 import mati.advancedgdx.AdvancedGame
 
-abstract class Screen(protected val game: AdvancedGame) : com.badlogic.gdx.Screen {
+public abstract class Screen(protected val game: AdvancedGame) : com.badlogic.gdx.Screen {
 	public open fun load() {
 	}
 

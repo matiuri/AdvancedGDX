@@ -3,18 +3,26 @@ package mati.advancedgdx
 import com.badlogic.gdx.Application.LOG_INFO
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
+import mati.advancedgdx.assets.AssetLoader
 import mati.advancedgdx.log.Logger
 import mati.advancedgdx.screens.Screen
 import mati.advancedgdx.screens.ScreenManager
+import kotlin.properties.Delegates
 
-open class AdvancedGame() : ApplicationAdapter() {
+public open class AdvancedGame() : ApplicationAdapter() {
 	public companion object Static {
 		val log: Logger = Logger()
 	}
 
-	var screen: Screen? = null
+	private var screen: Screen? = null
 
-	public val scrManager: ScreenManager = ScreenManager(this)
+	public var scrManager: ScreenManager by Delegates.notNull<ScreenManager>()
+	public var astManager: AssetLoader by Delegates.notNull<AssetLoader>()
+
+	public fun init(game: AdvancedGame) {
+		scrManager = ScreenManager(game)
+		astManager = AssetLoader(game)
+	}
 
 	override fun create() {
 		Thread.setDefaultUncaughtExceptionHandler({ thread, throwable ->
