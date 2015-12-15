@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application.LOG_INFO
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import mati.advancedgdx.assets.AssetLoader
+import mati.advancedgdx.io.IOManager
 import mati.advancedgdx.log.Logger
 import mati.advancedgdx.screens.Screen
 import mati.advancedgdx.screens.ScreenManager
@@ -11,17 +12,19 @@ import kotlin.properties.Delegates
 
 public open class AdvancedGame() : ApplicationAdapter() {
 	public companion object Static {
-		val log: Logger = Logger()
+		val log: Logger = Logger("log")
 	}
 
 	private var screen: Screen? = null
 
 	public var scrManager: ScreenManager by Delegates.notNull<ScreenManager>()
 	public var astManager: AssetLoader by Delegates.notNull<AssetLoader>()
+	public var ioManager: IOManager by Delegates.notNull<IOManager>()
 
 	public fun init(game: AdvancedGame) {
 		scrManager = ScreenManager(game)
 		astManager = AssetLoader(game)
+		ioManager = IOManager("saves")
 	}
 
 	override fun create() {

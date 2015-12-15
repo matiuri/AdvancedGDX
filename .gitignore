@@ -3,6 +3,7 @@ desktop/
 AdvancedGDX.kt
 *.l
 tests/
+*.dat
 
 ## Java
 *.class

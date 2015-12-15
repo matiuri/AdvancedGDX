@@ -7,11 +7,11 @@ import java.io.StringWriter
 import java.util.*
 import kotlin.properties.Delegates
 
-public class Logger() {
+public class Logger(private val dir: String) {
 	private var file: FileHandle by Delegates.notNull<FileHandle>()
 
 	public fun init() {
-		file = Gdx.files.local("log/log.l")
+		file = Gdx.files.local("$dir/log.l")
 		if (file.exists()) file.delete()
 	}
 
