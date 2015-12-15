@@ -1,6 +1,7 @@
 ##General
 desktop/
 AdvancedGDX.kt
+*.l
 
 ## Java
 *.class
