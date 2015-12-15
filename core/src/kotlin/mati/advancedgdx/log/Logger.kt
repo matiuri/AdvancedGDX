@@ -10,12 +10,12 @@ import kotlin.properties.Delegates
 public class Logger() {
 	private var file: FileHandle by Delegates.notNull<FileHandle>()
 
-	fun init() {
+	public fun init() {
 		file = Gdx.files.local("log/log.l")
 		if (file.exists()) file.delete()
 	}
 
-	fun d(name: String = "", text: String, t: Throwable? = null) {
+	public fun d(name: String = "", text: String, t: Throwable? = null) {
 		val header = createHeader(name, "DEBUG")
 		if (t != null) {
 			Gdx.app.debug(header, text, t)
@@ -27,7 +27,7 @@ public class Logger() {
 		}
 	}
 
-	fun l(name: String = "", text: String, t: Throwable? = null) {
+	public fun l(name: String = "", text: String, t: Throwable? = null) {
 		val header = createHeader(name, "INFO")
 		if (t != null) {
 			Gdx.app.log(header, text, t)
@@ -39,7 +39,7 @@ public class Logger() {
 		}
 	}
 
-	fun e(name: String = "", text: String, t: Throwable? = null) {
+	public fun e(name: String = "", text: String, t: Throwable? = null) {
 		val header = createHeader(name, "ERROR")
 		if (t != null) {
 			Gdx.app.error(header, text, t)
