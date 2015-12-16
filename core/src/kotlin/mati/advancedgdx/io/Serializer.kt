@@ -3,6 +3,9 @@ package mati.advancedgdx.io
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonWriter.OutputType
 
+/**
+ * You shouldn't use this class. Use [IOManager] instead.
+ */
 class Serializer() {
 	private val json = Json()
 

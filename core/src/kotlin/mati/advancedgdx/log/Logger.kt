@@ -7,6 +7,14 @@ import java.io.StringWriter
 import java.util.*
 import kotlin.properties.Delegates
 
+/**
+ * This class was created to allow the [Application][com.badlogic.gdx.Gdx.Application]'s log to export its Strings in
+ * a file.
+ *
+ * Also, it adds a header, which includes de type of log, the time and, optionally, a name.
+ *
+ * You shouldn't instance it, because [AdvancedGame][mati.advancedgdx.AdvancedGame] has an instance ready for you.
+ */
 public class Logger(private val dir: String) {
 	private var file: FileHandle by Delegates.notNull<FileHandle>()
 
@@ -15,6 +23,9 @@ public class Logger(private val dir: String) {
 		if (file.exists()) file.delete()
 	}
 
+	/**
+	 * Debug level. Prints a header, a text and, optionally, a Throwable.
+	 */
 	public fun d(name: String = "", text: String, t: Throwable? = null) {
 		val header = createHeader(name, "DEBUG")
 		if (t != null) {
@@ -27,6 +38,9 @@ public class Logger(private val dir: String) {
 		}
 	}
 
+	/**
+	 * Log (info) level. Prints a header, a text and, optionally, a Throwable.
+	 */
 	public fun l(name: String = "", text: String, t: Throwable? = null) {
 		val header = createHeader(name, "INFO")
 		if (t != null) {
@@ -39,6 +53,9 @@ public class Logger(private val dir: String) {
 		}
 	}
 
+	/**
+	 * Error level. Prints a header, a text and, optionally, a Throwable.
+	 */
 	public fun e(name: String = "", text: String, t: Throwable? = null) {
 		val header = createHeader(name, "ERROR")
 		if (t != null) {

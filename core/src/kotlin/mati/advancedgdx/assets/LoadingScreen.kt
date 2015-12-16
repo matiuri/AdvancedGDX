@@ -6,8 +6,15 @@ import mati.advancedgdx.AdvancedGame
 import mati.advancedgdx.AdvancedGame.Static.log
 import mati.advancedgdx.screens.Screen
 
-public class LoadingScreen(game: AdvancedGame, private val manager: AssetManager,
-                           private val after: () -> Unit) : Screen(game) {
+/**
+ * This is the generic loading screen. If you want to create a better one, feel free to extend it. Also, don't forget
+ * to set the astManager.screen as your own one's [Class].
+ *
+ * You are allowed to override all the [Screen]'s methods. Just remember that the code in [hide] is essential, so if
+ * you override it, you must call "super.hide()"
+ */
+public open class LoadingScreen(game: AdvancedGame, private val manager: AssetManager,
+                                private val after: () -> Unit) : Screen(game) {
 	public override fun show() {
 		log.l("${this.javaClass.simpleName}", "Attempting to load ${manager.queuedAssets} assets")
 	}
@@ -18,10 +25,13 @@ public class LoadingScreen(game: AdvancedGame, private val manager: AssetManager
 		else {
 			log.l("${this.javaClass.simpleName}", "Loaded all the assets - Calling \"after\" method")
 			after()
-			log.l("${this.javaClass.simpleName}", "Everything is lodaded now")
+			log.l("${this.javaClass.simpleName}", "Everything is loaded now")
 		}
 	}
 
+	/**
+	 * This method is essential. If you override, you must call "super.hide()"
+	 */
 	public override fun hide() {
 		game.scrManager.remove("Loading")
 	}
