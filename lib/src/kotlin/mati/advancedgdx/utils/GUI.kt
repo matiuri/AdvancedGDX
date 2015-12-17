@@ -18,48 +18,16 @@
 
 package mati.advancedgdx.utils
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter
+import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
-
-/**
- * This function creates a [BitmapFont]. However, it's rather inefficient, so use it carefully.
- *
- * @param path The path of the .ttf file.
- * @param param An instance of [FreeTypeFontParameter].
- *
- * @return The [BitmapFont]
- */
-public fun createFont(path: String, param: FreeTypeFontParameter): BitmapFont {
-	val generator: FreeTypeFontGenerator = FreeTypeFontGenerator(Gdx.files.internal(path))
-	val font: BitmapFont = generator.generateFont(param)
-	generator.dispose()
-	return font
-}
-
-/**
- * This function creates a [BitmapFont]. However, it's rather inefficient, so use it carefully.
- *
- * @param path The path of the .ttf file.
- * @param param A lambda which sets the properties of the a [FreeTypeFontParameter], received as parameter.
- *
- * @return The [BitmapFont]
- */
-public fun createFont(path: String, param: (p: FreeTypeFontParameter) -> Unit = {}): BitmapFont {
-	val generator: FreeTypeFontGenerator = FreeTypeFontGenerator(Gdx.files.internal(path))
-	val parameter: FreeTypeFontParameter = FreeTypeFontParameter()
-	param(parameter)
-	val font: BitmapFont = generator.generateFont(parameter)
-	generator.dispose()
-	return font
-}
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 
 /**
  * This function creates a [TextButton].
@@ -88,4 +56,21 @@ public fun createButton(text: String, font: BitmapFont, up: Drawable? = null, do
  */
 public fun createLabel(text: String, font: BitmapFont, color: Color = Color.WHITE): Label {
 	return Label(text, LabelStyle(font, color))
+}
+
+/**
+ * This function creates a [NinePatchDrawable] so that you can use as the background of the [TextButtons][TextButton].
+ * This library has it because, although you can do it in a single line, it can be really long, as you have to create a
+ * [NinePatch] with a [Texture] that you've loaded before.
+ *
+ *  @param tex [The Texture][Texture]
+ *  @param top
+ *  @param bottom
+ *  @param left
+ *  @param right
+ *
+ *  @return [A NinePatchDrawable][NinePatchDrawable]
+ */
+public fun createNPD(tex: Texture, top: Int, bottom: Int, left: Int, right: Int): NinePatchDrawable {
+	return NinePatchDrawable(NinePatch(tex, left, right, top, bottom))
 }
