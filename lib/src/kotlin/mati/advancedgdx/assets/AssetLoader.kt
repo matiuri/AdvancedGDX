@@ -1,6 +1,10 @@
 package mati.advancedgdx.assets
 
+import com.badlogic.gdx.assets.AssetLoaderParameters
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Disposable
 import mati.advancedgdx.AdvancedGame
 import java.util.*
@@ -15,6 +19,11 @@ public class AssetLoader(private val game: AdvancedGame) : Disposable {
 	private val manager: AssetManager = AssetManager()
 	private val screen: Class<LoadingScreen> = LoadingScreen::class.java
 
+	init {
+		manager.setLoader(FreeTypeFontGenerator::class.java, FontGeneratorLoader(InternalFileHandleResolver()))
+		manager.setLoader(BitmapFont::class.java, FontLoader(InternalFileHandleResolver()))
+	}
+
 	/**
 	 * This method adds an asset in the [manager]'s queue. An asset must be queued so that it can be loaded.
 	 *
@@ -24,10 +33,14 @@ public class AssetLoader(private val game: AdvancedGame) : Disposable {
 	 *
 	 * @return this, so you can chain calls
 	 */
-	public fun <T> queue(key: String, path: String, clazz: Class<T>): AssetLoader {
+	public fun <T> queue(key: String, path: String, clazz: Class<T>, par: AssetLoaderParameters<T>? = null)
+			: AssetLoader {
 		if (map.containsKey(key)) throw IllegalArgumentException("The key $key already exists")
 		map.put(key, path)
-		manager.load(path, clazz)
+		if (par != null)
+			manager.load(path, clazz, par)
+		else
+			manager.load(path, clazz)
 		return this
 	}
 
@@ -38,8 +51,9 @@ public class AssetLoader(private val game: AdvancedGame) : Disposable {
 	 * @param path The path of the asset
 	 * @param clazz The asset type's [KClass]
 	 */
-	public fun <T : Any> queue(key: String, path: String, clazz: KClass<T>): AssetLoader {
-		queue(key, path, clazz.java)
+	public fun <T : Any> queue(key: String, path: String, clazz: KClass<T>, par: AssetLoaderParameters<T>? = null)
+			: AssetLoader {
+		queue(key, path, clazz.java, par)
 		return this
 	}
 
@@ -85,6 +99,15 @@ public class AssetLoader(private val game: AdvancedGame) : Disposable {
 	public operator fun <T : Any> get(key: String, clazz: KClass<T>): T {
 		return get(key, clazz.java)
 	}
+
+	/**
+	 * Return the path of an asset.
+	 *
+	 * @param key The "alias" of the asset.
+	 *
+	 * @return The path, as string.
+	 */
+	public operator fun get(key: String): String = map[key]!!
 
 	/**
 	 * This method disposes an asset and deletes its "alias".
