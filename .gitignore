@@ -4,6 +4,7 @@ AdvancedGDX.kt
 *.l
 tests/
 *.dat
+*.svg
 
 ## Java
 *.class
