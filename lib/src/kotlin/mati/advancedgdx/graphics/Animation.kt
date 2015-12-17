@@ -1,3 +1,19 @@
+/**
+ *  Copyright 2015 Matías Steinberg
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mati.advancedgdx.graphics
 
 import com.badlogic.gdx.graphics.Texture
@@ -8,7 +24,7 @@ import kotlin.properties.Delegates
  * This class allows you to create 2D animations. To create it, you have to pass an array of [textures][Texture], a 2D
  * array of [textures][Texture], an array of [texture regions][TextureRegion] or a 2D array of
  * [texture regions][TextureRegion], and the amount of time required to change the frame, as float, and whether it's
- * repeteable or not, as boolean.
+ * repeatable or not, as boolean.
  */
 public class Animation private constructor(private val speed: Float, private val repeatable: Boolean) {
 	private var frames: Array<TextureRegion> by Delegates.notNull<Array<TextureRegion>>()
