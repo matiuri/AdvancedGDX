@@ -36,10 +36,10 @@ import kotlin.properties.Delegates
  * some screens, loading the managers, etc) is going to be there. Also, you have to call [init] in this method.
  * * [render]: It only renders the current [Screen], so if you want to use a general glClear, you'll have to override
  * it, calling glClear and then "super.render()". You shouldn't render anything here, use a [Screen] to to that.
- * *[dispose]: It disposes the default managers, so if you have created your own ones, you'll have to override it,
+ * * [dispose]: It disposes the default managers, so if you have created your own ones, you'll have to override it,
  * disposing your managers and calling "super.dispose()"
  *
- * You shouldn't override the other methods, because you can manage everything using [Screens][Screen]
+ * You shouldn't override the other methods, because you can manage everything using [Screens][Screen].
  */
 public open class AdvancedGame() : ApplicationAdapter() {
 	public companion object Static {
