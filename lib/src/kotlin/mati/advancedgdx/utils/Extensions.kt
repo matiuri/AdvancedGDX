@@ -20,6 +20,9 @@ package mati.advancedgdx.utils
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent
 
 /**
  * This function allows you to split a Texture into a 1D Array. It's really useful when you have some different frames
@@ -32,9 +35,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
  * @return An array containing the frames.
  */
 public fun Texture.split(width: Int): Array<TextureRegion> {
-	return Array(this.width / width) { i ->
-		TextureRegion(this, i * width, 0, width, height)
-	}
+    return Array(this.width / width) { i ->
+        TextureRegion(this, i * width, 0, width, height)
+    }
 }
 
 /**
@@ -46,11 +49,20 @@ public fun Texture.split(width: Int): Array<TextureRegion> {
  * @return An array of [Any]?
  */
 public fun<T> Array<Array<T>>.to1D(): Array<Any?> {
-	val size: Int = this.size * get(0).size
-	var index: Int = 0
-	val temp: Array<Any?> = arrayOfNulls(size)
-	for (x in indices)
-		for (y in get(x).indices)
-			temp[index++] = get(x)[y]
-	return temp
+    val size: Int = this.size * get(0).size
+    var index: Int = 0
+    val temp: Array<Any?> = arrayOfNulls(size)
+    for (x in indices)
+        for (y in get(x).indices)
+            temp[index++] = get(x)[y]
+    return temp
+}
+
+public fun Actor.addListener1(fun_: (e: ChangeEvent?, a: Actor?) -> Unit) {
+    addCaptureListener(object : ChangeListener() {
+        override fun changed(event: ChangeEvent?, actor: Actor?) {
+            fun_(event, actor)
+            event?.cancel()
+        }
+    })
 }
