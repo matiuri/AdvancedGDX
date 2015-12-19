@@ -43,7 +43,6 @@ public class FontGeneratorLoader(resolver: FileHandleResolver)
 	override fun getDependencies(fileName: String?, file: FileHandle?, parameter: FontGeneratorLoaderParameter?)
 			: com.badlogic.gdx.utils.Array<AssetDescriptor<out Any>>? {
 		val deps: com.badlogic.gdx.utils.Array<AssetDescriptor<out Any>> = com.badlogic.gdx.utils.Array()
-		deps.add(AssetDescriptor<FileHandle>(fileName, FileHandle::class.java))
 		return deps
 	}
 
