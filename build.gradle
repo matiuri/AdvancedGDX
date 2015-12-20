@@ -1,48 +1,12 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    }
-    dependencies {
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0-beta-3595'
-    }
-}
+apply plugin: "java"
+apply plugin: "kotlin"
 
-allprojects {
-    apply plugin: "eclipse"
-    apply plugin: "idea"
+sourceCompatibility = 1.7
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-    version = '1.0'
-    ext {
-        appName = "AdvancedGDX"
-        gdxVersion = '1.7.1'
-        roboVMVersion = '1.9.0'
-        box2DLightsVersion = '1.4'
-        ashleyVersion = '1.7.0'
-        aiVersion = '1.6.0'
-    }
-
-    repositories {
-        mavenCentral()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-    }
-}
-
-project(":lib") {
-    apply plugin: "java"
-    apply plugin: "kotlin"
+sourceSets.main.java.srcDirs = ["src/java", "src/kotlin"]
 
 
-    dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.0-beta-3595'
-    }
-}
-
-tasks.eclipse.doLast {
-    delete ".project"
+eclipse.project {
+    name = appName + "-lib"
 }
