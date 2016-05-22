@@ -21,14 +21,14 @@ import mati.advancedgdx.AdvancedGame
 import java.util.*
 
 /**
- * This class manages the [Screens][Screen] of your game, allowing them to have "aliases". You souldn't instance it,
+ * This class manages the [Screens][Screen] of your game, allowing them to have "aliases". You shouldn't instance it,
  * because [AdvancedGame] has an instance ready for you.
  */
 public class ScreenManager(private val game: AdvancedGame) : Disposable {
     private val map: MutableMap<String, Screen> = HashMap()
 
     /**
-     * This mehtod adds a [Screen], with the given "alias".
+     * This method adds a [Screen], with the given "alias".
      *
      * @param key The "alias" of the screen.
      * @param screen An instance of the screen.
@@ -95,7 +95,7 @@ public class ScreenManager(private val game: AdvancedGame) : Disposable {
     }
 
     /**
-     * This method dipsose all the screens which have been added in this [ScreenManager]. You **CAN** use this
+     * This method dispose all the screens which have been added in this [ScreenManager]. You **CAN** use this
      * [ScreenManager] after calling dispose.
      */
     public override fun dispose() {

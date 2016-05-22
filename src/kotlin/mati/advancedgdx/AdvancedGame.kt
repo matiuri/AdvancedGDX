@@ -42,100 +42,101 @@ import kotlin.properties.Delegates
  * You shouldn't override the other methods, because you can manage everything using [Screens][Screen].
  */
 public open class AdvancedGame() : ApplicationAdapter() {
-	public companion object Static {
-		val log: Logger = Logger("log")
-	}
+    public companion object Static {
+        val log: Logger = Logger("log")
+    }
 
-	private var screen: Screen? = null
+    private var screen: Screen? = null
 
-	public var scrManager: ScreenManager by Delegates.notNull<ScreenManager>()
-	public var astManager: AssetLoader by Delegates.notNull<AssetLoader>()
-	public var ioManager: IOManager by Delegates.notNull<IOManager>()
+    public var scrManager: ScreenManager by Delegates.notNull<ScreenManager>()
+    public var astManager: AssetLoader by Delegates.notNull<AssetLoader>()
+    public var ioManager: IOManager by Delegates.notNull<IOManager>()
 
-	/**
-	 * This method loads all the managers of [AdvancedGame]. You have to call it on your own so that they can receive
-	 * your class that extends [AdvancedGame].
-	 *
-	 * @param game Your game's main class
-	 */
-	public fun init(game: AdvancedGame) {
-		scrManager = ScreenManager(game)
-		astManager = AssetLoader(game)
-		ioManager = IOManager("saves")
-	}
+    /**
+     * This method loads all the managers of [AdvancedGame]. You have to call it on your own so that they can receive
+     * your class that extends [AdvancedGame].
+     *
+     * @param game Your game's main class
+     */
+    public fun init(game: AdvancedGame) {
+        scrManager = ScreenManager(game)
+        astManager = AssetLoader(game)
+        ioManager = IOManager("saves")
+    }
 
-	/**
-	 * This method is called each time you launch your game.
-	 *
-	 * Don't forget to call "super.create()" if you want this library to work properly.
-	 * Also, you must call [init] to load the managers: [scrManager], [astManager] and [ioManager].
-	 */
-	override fun create() {
-		Thread.setDefaultUncaughtExceptionHandler({ thread, throwable ->
-			log.e("${thread.name}", "FATAL ERROR", throwable)
-			System.exit(-1)
-		})
+    /**
+     * This method is called each time you launch your game.
+     *
+     * Don't forget to call "super.create()" if you want this library to work properly.
+     * Also, you must call [init] to load the managers: [scrManager], [astManager] and [ioManager].
+     */
+    override fun create() {
+        Thread.setDefaultUncaughtExceptionHandler({ thread, throwable ->
+            log.e("${thread.name}", "FATAL ERROR", throwable)
+            System.exit(-1)
+        })
 
-		Gdx.app.logLevel = LOG_INFO
-		log.init()
-		log.l("${this.javaClass.simpleName}", "Starting Game")
-	}
+        Gdx.app.logLevel = LOG_INFO
+        log.init()
+        log.l("${this.javaClass.simpleName}", "Starting Game")
+    }
 
-	/**
-	 * This method is called called repeatedly while your game is running, after calling [create].
-	 *
-	 * If you override it and forget the "super.render()", the current screen won't be rendered.
-	 */
-	override fun render() {
-		screen?.render(Gdx.graphics.deltaTime)
-	}
+    /**
+     * This method is called called repeatedly while your game is running, after calling [create].
+     *
+     * If you override it and forget the "super.render()", the current screen won't be rendered.
+     */
+    override fun render() {
+        screen?.render(Gdx.graphics.deltaTime)
+    }
 
-	/**
-	 * This method is called when you resize the game's window.
-	 *
-	 * You shouldn't override it.
-	 */
-	override fun resize(width: Int, height: Int) {
-		screen?.resize(width, height)
-	}
+    /**
+     * This method is called when you resize the game's window.
+     *
+     * You shouldn't override it.
+     */
+    override fun resize(width: Int, height: Int) {
+        screen?.resize(width, height)
+    }
 
-	/**
-	 * This method is called when your game is minimized. Sometimes, your game can be killed in this state and
-	 * [dispose] won't be called, so you should save here.
-	 *
-	 * You shouldn't override it. Use the [Screen.hide] method to save.
-	 */
-	override fun pause() {
-		screen?.pause()
-	}
+    /**
+     * This method is called when your game is minimized. Sometimes, your game can be killed in this state and
+     * [dispose] won't be called, so you should save here.
+     *
+     * You shouldn't override it. Use the [Screen.hide] method to save.
+     */
+    override fun pause() {
+        screen?.pause()
+    }
 
-	/**
-	 * This method is called when your game is restored.
-	 *
-	 * You shouldn't override it. Use the [Screen.hide] method instead.
-	 */
-	override fun resume() {
-		screen?.resume()
-	}
+    /**
+     * This method is called when your game is restored.
+     *
+     * You shouldn't override it. Use the [Screen.hide] method instead.
+     */
+    override fun resume() {
+        screen?.resume()
+    }
 
-	/**
-	 * This method is called when you close your game.
-	 *
-	 * If you have to dispose something, override it and don't forget "super.dispose()"
-	 */
-	override fun dispose() {
-		scrManager.dispose()
-		astManager.dispose()
-	}
+    /**
+     * This method is called when you close your game.
+     *
+     * If you have to dispose something, override it and don't forget "super.dispose()"
+     */
+    override fun dispose() {
+        log.l("${this.javaClass.simpleName}", "Exiting Game")
+        scrManager.dispose()
+        astManager.dispose()
+    }
 
-	/**
-	 * You shouldn't call this method, unless you want to change to a null [Screen], as [ScreenManager] doesn't allow
-	 * null values.
-	 */
-	fun setCurrentScreen(screen: Screen?) {
-		this.screen?.hide()
-		this.screen = screen
-		this.screen?.show()
-		this.screen?.resize(Gdx.graphics.width, Gdx.graphics.height)
-	}
+    /**
+     * You shouldn't call this method, unless you want to change to a null [Screen], as [ScreenManager] doesn't allow
+     * null values.
+     */
+    fun setCurrentScreen(screen: Screen?) {
+        this.screen?.hide()
+        this.screen = screen
+        this.screen?.show()
+        this.screen?.resize(Gdx.graphics.width, Gdx.graphics.height)
+    }
 }
