@@ -42,7 +42,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
  */
 public fun createButton(text: String, font: BitmapFont, up: Drawable? = null, down: Drawable? = null,
                         checked: Drawable? = null): TextButton {
-	return TextButton(text, TextButtonStyle(up, down, checked, font))
+    return TextButton(text, TextButtonStyle(up, down, checked, font))
 }
 
 /**
@@ -55,7 +55,7 @@ public fun createButton(text: String, font: BitmapFont, up: Drawable? = null, do
  * @return A [Label].
  */
 public fun createLabel(text: String, font: BitmapFont, color: Color = Color.WHITE): Label {
-	return Label(text, LabelStyle(font, color))
+    return Label(text, LabelStyle(font, color))
 }
 
 /**
@@ -72,5 +72,9 @@ public fun createLabel(text: String, font: BitmapFont, color: Color = Color.WHIT
  *  @return [A NinePatchDrawable][NinePatchDrawable]
  */
 public fun createNPD(tex: Texture, top: Int, bottom: Int, left: Int, right: Int): NinePatchDrawable {
-	return NinePatchDrawable(NinePatch(tex, left, right, top, bottom))
+    return NinePatchDrawable(NinePatch(tex, left, right, top, bottom))
+}
+
+public fun createNPD(tex: Texture, px: Int): NinePatchDrawable {
+    return createNPD(tex, px, px, px, px)
 }

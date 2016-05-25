@@ -30,128 +30,143 @@ import kotlin.reflect.KClass
  * This class manages the assets of you game, allowing you to replace the long file name with an "alias" (actually a
  * key). You shouldn't instance it, because it's already instanced in [AdvancedGame], as [AdvancedGame.astManager].
  */
-public class AssetLoader(private val game: AdvancedGame) : Disposable {
-	private val map: MutableMap<String, String> = HashMap()
-	private val manager: AssetManager = AssetManager()
-	private val screen: Class<LoadingScreen> = LoadingScreen::class.java
+class AssetLoader(private val game: AdvancedGame) : Disposable {
+    private val map: MutableMap<String, String> = HashMap()
+    private val manager: AssetManager = AssetManager()
+    private val screen: Class<LoadingScreen> = LoadingScreen::class.java
 
-	init {
-		manager.setLoader(FreeTypeFontGenerator::class.java, FontGeneratorLoader(InternalFileHandleResolver()))
-		manager.setLoader(BitmapFont::class.java, FontLoader(InternalFileHandleResolver()))
-	}
+    init {
+        manager.setLoader(FreeTypeFontGenerator::class.java, FontGeneratorLoader(InternalFileHandleResolver()))
+        manager.setLoader(BitmapFont::class.java, FontLoader(InternalFileHandleResolver()))
+    }
 
-	/**
-	 * This method adds an asset in the [manager]'s queue. An asset must be queued so that it can be loaded.
-	 *
-	 * @param key The "alias" of the asset
-	 * @param path The path of the asset
-	 * @param clazz The asset type's [Class]
-	 *
-	 * @return this, so you can chain calls
-	 */
-	public fun <T> queue(key: String, path: String, clazz: Class<T>, par: AssetLoaderParameters<T>? = null)
-			: AssetLoader {
-		if (map.containsKey(key)) throw IllegalArgumentException("The key $key already exists")
-		map.put(key, path)
-		if (par != null)
-			manager.load(path, clazz, par)
-		else
-			manager.load(path, clazz)
-		return this
-	}
+    /**
+     * This method adds an asset in the [manager]'s queue. An asset must be queued so that it can be loaded.
+     *
+     * @param key The "alias" of the asset
+     * @param path The path of the asset
+     * @param clazz The asset type's [Class]
+     *
+     * @return this, so you can chain calls
+     */
+    fun <T> queue(key: String, path: String, clazz: Class<T>, par: AssetLoaderParameters<T>? = null)
+            : AssetLoader {
+        if (map.containsKey(key)) throw IllegalArgumentException("The key $key already exists")
+        map.put(key, path)
+        if (par != null)
+            manager.load(path, clazz, par)
+        else
+            manager.load(path, clazz)
+        return this
+    }
 
-	/**
-	 * This method adds an asset in the [manager]'s queue. An asset must be queued so that it can be loaded.
-	 *
-	 * @param key The "alias" of the asset
-	 * @param path The path of the asset
-	 * @param clazz The asset type's [KClass]
-	 */
-	public fun <T : Any> queue(key: String, path: String, clazz: KClass<T>, par: AssetLoaderParameters<T>? = null)
-			: AssetLoader {
-		queue(key, path, clazz.java, par)
-		return this
-	}
+    /**
+     * This method adds an asset in the [manager]'s queue. An asset must be queued so that it can be loaded.
+     *
+     * @param key The "alias" of the asset
+     * @param path The path of the asset
+     * @param clazz The asset type's [KClass]
+     */
+    fun <T : Any> queue(key: String, path: String, clazz: KClass<T>, par: AssetLoaderParameters<T>? = null)
+            : AssetLoader {
+        queue(key, path, clazz.java, par)
+        return this
+    }
 
-	/**
-	 * This method loads all the queued assets, via [LoadingScreen]. You can create your own screen that extends
-	 * [LoadingScreen], and set the variable [screen] as the [Class] of your own one.
-	 *
-	 * @param after A lambda which contains the code that will be executed after loading the assets. You should
-	 * load the screens using the ScreenManager here.
-	 */
-	public fun load(after: () -> Unit = { game.setCurrentScreen(null) }) {
-		game.scrManager.add("Loading", screen.constructors[0].newInstance(game, manager, after) as LoadingScreen)
-		game.scrManager.change("Loading")
-	}
+    /**
+     * This method adds assets from a min number to a max one
+     * TODO: Complete KDoc
+     */
+    fun <T> queue(key: String, path1: String, path2: String, clazz: Class<T>, min: Int, max: Int,
+                  par: AssetLoaderParameters<T>? = null): AssetLoader {
+        for (i in min..max) queue("$key$i", "$path1$i$path2", clazz, par)
+        return this
+    }
 
-	/**
-	 * This methods returns the asset that you want.
-	 *
-	 * In Kotlin, you can call it as "astManager[]", with the parameters between the [], because it's an operator
-	 * method.
-	 *
-	 * @param key The "alias" of the asset
-	 * @param clazz The asset type's [Class]
-	 *
-	 * @return An asset
-	 */
-	public operator fun <T> get(key: String, clazz: Class<T>): T {
-		if (!map.containsKey(key)) throw IllegalArgumentException("The key $key doesn't exist")
-		return manager.get(map[key], clazz)
-	}
+    fun <T : Any> queue(key: String, path1: String, path2: String, clazz: KClass<T>, min: Int, max: Int,
+                        par: AssetLoaderParameters<T>? = null): AssetLoader {
+        return queue(key, path1, path2, clazz.java, min, max, par)
+    }
 
-	/**
-	 * This methods returns the asset that you want.
-	 *
-	 * In Kotlin, you can call it as "astManager[]", with the parameters between the [], because it's an operator
-	 * method.
-	 *
-	 * @param key The "alias" of the asset
-	 * @param clazz The asset type's [KClass]
-	 *
-	 * @return An asset
-	 */
-	public operator fun <T : Any> get(key: String, clazz: KClass<T>): T {
-		return get(key, clazz.java)
-	}
+    /**
+     * This method loads all the queued assets, via [LoadingScreen]. You can create your own screen that extends
+     * [LoadingScreen], and set the variable [screen] as the [Class] of your own one.
+     *
+     * @param after A lambda which contains the code that will be executed after loading the assets. You should
+     * load the screens using the ScreenManager here.
+     */
+    fun load(after: () -> Unit = { game.setCurrentScreen(null) }) {
+        game.scrManager.add("Loading", screen.constructors[0].newInstance(game, manager, after) as LoadingScreen)
+        game.scrManager.change("Loading")
+    }
 
-	/**
-	 * Return the path of an asset.
-	 *
-	 * @param key The "alias" of the asset.
-	 *
-	 * @return The path, as string.
-	 */
-	public operator fun get(key: String): String = map[key]!!
+    /**
+     * This methods returns the asset that you want.
+     *
+     * In Kotlin, you can call it as "astManager[]", with the parameters between the [], because it's an operator
+     * method.
+     *
+     * @param key The "alias" of the asset
+     * @param clazz The asset type's [Class]
+     *
+     * @return An asset
+     */
+    operator fun <T> get(key: String, clazz: Class<T>): T {
+        if (!map.containsKey(key)) throw IllegalArgumentException("The key $key doesn't exist")
+        return manager.get(map[key], clazz)
+    }
 
-	/**
-	 * This method disposes an asset and deletes its "alias".
-	 *
-	 * @param key The "alias" of the asset
-	 *
-	 * @return this, so you can chain calls
-	 */
-	public fun remove(key: String): AssetLoader {
-		if (!map.containsKey(key)) throw IllegalArgumentException("The key $key doesn't exist")
-		manager.unload(map[key])
-		return this
-	}
+    /**
+     * This methods returns the asset that you want.
+     *
+     * In Kotlin, you can call it as "astManager[]", with the parameters between the [], because it's an operator
+     * method.
+     *
+     * @param key The "alias" of the asset
+     * @param clazz The asset type's [KClass]
+     *
+     * @return An asset
+     */
+    operator fun <T : Any> get(key: String, clazz: KClass<T>): T {
+        return get(key, clazz.java)
+    }
 
-	/**
-	 * This method disposes all the assets and deletes its "aliases"
-	 */
-	public fun clear() {
-		manager.clear()
-		map.clear()
-	}
+    /**
+     * Return the path of an asset.
+     *
+     * @param key The "alias" of the asset.
+     *
+     * @return The path, as string.
+     */
+    operator fun get(key: String): String = map[key]!!
 
-	/**
-	 * This method disposes the [manager], so you mustn't call any method of an instance of this class if you've
-	 * already called [dispose].
-	 */
-	public override fun dispose() {
-		manager.dispose()
-		map.clear()
-	}
+    /**
+     * This method disposes an asset and deletes its "alias".
+     *
+     * @param key The "alias" of the asset
+     *
+     * @return this, so you can chain calls
+     */
+    fun remove(key: String): AssetLoader {
+        if (!map.containsKey(key)) throw IllegalArgumentException("The key $key doesn't exist")
+        manager.unload(map[key])
+        return this
+    }
+
+    /**
+     * This method disposes all the assets and deletes its "aliases"
+     */
+    fun clear() {
+        manager.clear()
+        map.clear()
+    }
+
+    /**
+     * This method disposes the [manager], so you mustn't call any method of an instance of this class if you've
+     * already called [dispose].
+     */
+    override fun dispose() {
+        manager.dispose()
+        map.clear()
+    }
 }

@@ -18,6 +18,9 @@
 
 package mati.advancedgdx.utils
 
+import com.badlogic.gdx.Application.ApplicationType.Android
+import com.badlogic.gdx.Application.ApplicationType.Desktop
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -34,7 +37,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent
  *
  * @return An array containing the frames.
  */
-public fun Texture.split(width: Int): Array<TextureRegion> {
+fun Texture.split(width: Int): Array<TextureRegion> {
     return Array(this.width / width) { i ->
         TextureRegion(this, i * width, 0, width, height)
     }
@@ -48,7 +51,7 @@ public fun Texture.split(width: Int): Array<TextureRegion> {
  *
  * @return An array of [Any]?
  */
-public fun<T> Array<Array<T>>.to1D(): Array<Any?> {
+fun<T> Array<Array<T>>.to1D(): Array<Any?> {
     val size: Int = this.size * get(0).size
     var index: Int = 0
     val temp: Array<Any?> = arrayOfNulls(size)
@@ -58,7 +61,7 @@ public fun<T> Array<Array<T>>.to1D(): Array<Any?> {
     return temp
 }
 
-public fun Actor.addListener1(fun_: (e: ChangeEvent?, a: Actor?) -> Unit) {
+fun Actor.addListener1(fun_: (e: ChangeEvent?, a: Actor?) -> Unit) {
     addCaptureListener(object : ChangeListener() {
         override fun changed(event: ChangeEvent?, actor: Actor?) {
             fun_(event, actor)
@@ -66,3 +69,15 @@ public fun Actor.addListener1(fun_: (e: ChangeEvent?, a: Actor?) -> Unit) {
         }
     })
 }
+
+fun Actor.addListener2(fun_: (e: ChangeEvent?, a: Actor?) -> Unit) {
+    addCaptureListener(object : ChangeListener() {
+        override fun changed(event: ChangeEvent?, actor: Actor?) {
+            fun_(event, actor)
+        }
+    })
+}
+
+fun isDesktop(): Boolean = Gdx.app.type == Desktop
+
+fun isAndroid(): Boolean = Gdx.app.type == Android
