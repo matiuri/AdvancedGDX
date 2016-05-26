@@ -70,4 +70,9 @@ class IOManager(private val dir: String) {
      * @return A boolean
      */
     fun exists(name: String): Boolean = Gdx.files.local("$dir/$name.dat").exists()
+
+    fun delete(name: String): IOManager {
+        Gdx.files.local("$dir/$name.dat").delete()
+        return this
+    }
 }
