@@ -23,19 +23,19 @@ import com.badlogic.gdx.utils.JsonWriter.OutputType
  * You shouldn't use this class. Use [IOManager] instead.
  */
 class Serializer() {
-	private val json = Json()
+    private val json = Json()
 
-	init {
-		json.setOutputType(OutputType.json)
-	}
+    init {
+        json.setOutputType(OutputType.json)
+    }
 
-	fun <T> serialize(obj: T, serializable: Serializable<T>, clazz: Class<out Serializable<T>>): String {
-		serializable.preserialize(obj)
-		return json.toJson(serializable, clazz)
-	}
+    fun <T> serialize(obj: T, serializable: Serializable<T>, clazz: Class<out Serializable<T>>): String {
+        serializable.preserialize(obj)
+        return json.toJson(serializable, clazz)
+    }
 
-	fun <T> deserialize(str: String, clazz: Class<out Serializable<T>>): T {
-		val ser: Serializable<T> = json.fromJson(clazz, str)
-		return ser.recover()
-	}
+    fun <T> deserialize(str: String, clazz: Class<out Serializable<T>>): T {
+        val ser: Serializable<T> = json.fromJson(clazz, str)
+        return ser.recover()
+    }
 }
