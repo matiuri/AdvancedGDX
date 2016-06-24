@@ -19,6 +19,7 @@ package mati.advancedgdx.io
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Base64Coder.decodeString
 import com.badlogic.gdx.utils.Base64Coder.encodeString
+import mati.advancedgdx.AdvancedGame
 import kotlin.reflect.KClass
 
 /**
@@ -38,6 +39,10 @@ class IOManager(private val dir: String) {
     fun <T> save(name: String, obj: T, serializable: Serializable<T>) {
         val str: String = serializer.serialize(obj, serializable, serializable.javaClass)
         Gdx.files.local("$dir/$name.dat").writeString(encodeString(str), false)
+    }
+
+    fun<T> print(obj: T, serializable: Serializable<T>) {
+        AdvancedGame.log.d("${this.javaClass.simpleName}", serializer.print(obj, serializable))
     }
 
     /**

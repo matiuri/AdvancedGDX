@@ -34,6 +34,11 @@ class Serializer() {
         return json.toJson(serializable, clazz)
     }
 
+    fun <T> print(obj: T, serializable: Serializable<T>): String {
+        serializable.preserialize(obj)
+        return json.prettyPrint(obj)
+    }
+
     fun <T> deserialize(str: String, clazz: Class<out Serializable<T>>): T {
         val ser: Serializable<T> = json.fromJson(clazz, str)
         return ser.recover()
