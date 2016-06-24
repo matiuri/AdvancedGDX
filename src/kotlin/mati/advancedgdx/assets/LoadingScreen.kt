@@ -29,13 +29,13 @@ import mati.advancedgdx.screens.Screen
  * You are allowed to override all the [Screen]'s methods. Just remember that the code in [hide] is essential, so if
  * you override it, you must call "super.hide()"
  */
-public open class LoadingScreen(game: AdvancedGame, private val manager: AssetManager,
-                                private val after: () -> Unit) : Screen(game) {
-    public override fun show() {
+open class LoadingScreen(game: AdvancedGame, private val manager: AssetManager,
+                         private val after: () -> Unit) : Screen<AdvancedGame>(game) {
+    override fun show() {
         log.l("${this.javaClass.simpleName}", "Attempting to load ${manager.queuedAssets} assets")
     }
 
-    public override fun render(delta: Float) {
+    override fun render(delta: Float) {
         if (!manager.update())
             log.l("${this.javaClass.simpleName}", "Loading: ${MathUtils.round(manager.progress * 100)}%")
         else {
@@ -48,7 +48,7 @@ public open class LoadingScreen(game: AdvancedGame, private val manager: AssetMa
     /**
      * This method is essential. If you override, you must call "super.hide()"
      */
-    public override fun hide() {
+    override fun hide() {
         game.scrManager.remove("Loading")
     }
 }

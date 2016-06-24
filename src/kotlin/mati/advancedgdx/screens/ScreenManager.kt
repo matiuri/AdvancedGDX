@@ -24,8 +24,8 @@ import java.util.*
  * This class manages the [Screens][Screen] of your game, allowing them to have "aliases". You shouldn't instance it,
  * because [AdvancedGame] has an instance ready for you.
  */
-public class ScreenManager(private val game: AdvancedGame) : Disposable {
-    private val map: MutableMap<String, Screen> = HashMap()
+class ScreenManager(private val game: AdvancedGame) : Disposable {
+    private val map: MutableMap<String, Screen<out AdvancedGame>> = HashMap()
 
     /**
      * This method adds a [Screen], with the given "alias".
@@ -35,7 +35,7 @@ public class ScreenManager(private val game: AdvancedGame) : Disposable {
      *
      * @return this, so you can chain the calls.
      */
-    public fun add(key: String, screen: Screen): ScreenManager {
+    fun add(key: String, screen: Screen<out AdvancedGame>): ScreenManager {
         if (map.containsKey(key)) throw IllegalArgumentException("The key $key already exists")
         map.put(key, screen)
         return this
@@ -46,7 +46,7 @@ public class ScreenManager(private val game: AdvancedGame) : Disposable {
      *
      * @param key The "alias" of the screen.
      */
-    public fun load(key: String): ScreenManager {
+    fun load(key: String): ScreenManager {
         if (!map.containsKey(key)) throw IllegalArgumentException("The key $key doesn't exist")
         map[key]?.load()
         return this
@@ -55,7 +55,7 @@ public class ScreenManager(private val game: AdvancedGame) : Disposable {
     /**
      * This method loads all the screens that have been added to this [ScreenManager]
      */
-    public fun loadAll() {
+    fun loadAll() {
         for ((k, v) in map)
             v.load()
     }
@@ -67,7 +67,7 @@ public class ScreenManager(private val game: AdvancedGame) : Disposable {
      *
      * @return The screen, as [Screen]
      */
-    public operator fun get(key: String): Screen {
+    operator fun get(key: String): Screen<out AdvancedGame> {
         if (!map.containsKey(key)) throw IllegalArgumentException("The key $key doesn't exist")
         return map[key]!!
     }
@@ -77,7 +77,7 @@ public class ScreenManager(private val game: AdvancedGame) : Disposable {
      *
      * @param key The "alias" of the screen.
      */
-    public fun change(key: String) {
+    fun change(key: String) {
         if (!map.containsKey(key)) throw IllegalArgumentException("The key $key doesn't exist")
         game.setCurrentScreen(map[key])
     }
@@ -87,7 +87,7 @@ public class ScreenManager(private val game: AdvancedGame) : Disposable {
      *
      * @param key The "alias" of the screen.
      */
-    public fun remove(key: String): ScreenManager {
+    fun remove(key: String): ScreenManager {
         if (!map.containsKey(key)) throw IllegalArgumentException("The key $key doesn't exist")
         map[key]?.dispose()
         map.remove(key)
@@ -98,7 +98,7 @@ public class ScreenManager(private val game: AdvancedGame) : Disposable {
      * This method dispose all the screens which have been added in this [ScreenManager]. You **CAN** use this
      * [ScreenManager] after calling dispose.
      */
-    public override fun dispose() {
+    override fun dispose() {
         for ((k, v) in map)
             v.dispose()
         map.clear()

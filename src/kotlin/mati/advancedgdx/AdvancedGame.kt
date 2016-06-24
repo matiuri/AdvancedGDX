@@ -41,16 +41,16 @@ import kotlin.properties.Delegates
  *
  * You shouldn't override the other methods, because you can manage everything using [Screens][Screen].
  */
-public open class AdvancedGame() : ApplicationAdapter() {
-    public companion object Static {
+open class AdvancedGame() : ApplicationAdapter() {
+    companion object Static {
         val log: Logger = Logger("log")
     }
 
-    private var screen: Screen? = null
+    private var screen: Screen<out AdvancedGame>? = null
 
-    public var scrManager: ScreenManager by Delegates.notNull<ScreenManager>()
-    public var astManager: AssetLoader by Delegates.notNull<AssetLoader>()
-    public var ioManager: IOManager by Delegates.notNull<IOManager>()
+    var scrManager: ScreenManager by Delegates.notNull<ScreenManager>()
+    var astManager: AssetLoader by Delegates.notNull<AssetLoader>()
+    var ioManager: IOManager by Delegates.notNull<IOManager>()
 
     /**
      * This method loads all the managers of [AdvancedGame]. You have to call it on your own so that they can receive
@@ -58,7 +58,7 @@ public open class AdvancedGame() : ApplicationAdapter() {
      *
      * @param game Your game's main class
      */
-    public fun init(game: AdvancedGame) {
+    fun init(game: AdvancedGame) {
         scrManager = ScreenManager(game)
         astManager = AssetLoader(game)
         ioManager = IOManager("saves")
@@ -133,7 +133,7 @@ public open class AdvancedGame() : ApplicationAdapter() {
      * You shouldn't call this method, unless you want to change to a null [Screen], as [ScreenManager] doesn't allow
      * null values.
      */
-    fun setCurrentScreen(screen: Screen?) {
+    fun setCurrentScreen(screen: Screen<out AdvancedGame>?) {
         this.screen?.hide()
         this.screen = screen
         this.screen?.show()

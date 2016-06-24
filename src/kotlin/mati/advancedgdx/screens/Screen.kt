@@ -26,64 +26,64 @@ import mati.advancedgdx.AdvancedGame
  *
  * You must **NOT** call the methods of the [Screen], use the [ScreenManager] ones instead.
  */
-public abstract class Screen(protected val game: AdvancedGame) : com.badlogic.gdx.Screen {
-	/**
-	 * This method will be executed when you call [ScreenManager.load] or [ScreenManager.loadAll]. It allows you to
-	 * load some assets or heavy things, so you can keep them in memory until you call [dispose].
-	 */
-	public open fun load() {
-	}
+abstract class Screen<T : AdvancedGame>(protected val game: T) : com.badlogic.gdx.Screen {
+    /**
+     * This method will be executed when you call [ScreenManager.load] or [ScreenManager.loadAll]. It allows you to
+     * load some assets or heavy things, so you can keep them in memory until you call [dispose].
+     */
+    open fun load() {
+    }
 
-	/**
-	 * This method is called when you screen has just been set. You can create the
-	 * [Stages][com.badlogic.gdx.scenes.scene2d.Stage] here, for example.
-	 */
-	override fun show() {
-	}
+    /**
+     * This method is called when you screen has just been set. You can create the
+     * [Stages][com.badlogic.gdx.scenes.scene2d.Stage] here, for example.
+     */
+    override fun show() {
+    }
 
-	/**
-	 * This method is called by [AdvancedGame.render] if the screen is set. You can update the physics and draw the
-	 * sprites here.
-	 *
-	 * @param delta The time between the last frame and this frame.
-	 */
-	public override fun render(delta: Float) {
-	}
+    /**
+     * This method is called by [AdvancedGame.render] if the screen is set. You can update the physics and draw the
+     * sprites here.
+     *
+     * @param delta The time between the last frame and this frame.
+     */
+    override fun render(delta: Float) {
+    }
 
-	/**
-	 * This method is called by [AdvancedGame.resize] if the screen is set. If you want to resize something, you can do
-	 * it here. For example, if your GUI has to be as wide as the game's window, you can modify its width.
-	 *
-	 * @param width The new width.
-	 * @param height The new height.
-	 */
-	public override fun resize(width: Int, height: Int) {
-	}
+    /**
+     * This method is called by [AdvancedGame.resize] if the screen is set. If you want to resize something, you can do
+     * it here. For example, if your GUI has to be as wide as the game's window, you can modify its width.
+     *
+     * @param width The new width.
+     * @param height The new height.
+     */
+    override fun resize(width: Int, height: Int) {
+    }
 
-	/**
-	 * This method is called by [AdvancedGame.pause] if the screen is set. You can prevent the physics to be updated
-	 * here.
-	 */
-	public override fun pause() {
-	}
+    /**
+     * This method is called by [AdvancedGame.pause] if the screen is set. You can prevent the physics to be updated
+     * here.
+     */
+    override fun pause() {
+    }
 
-	/**
-	 * This method is called by [AdvancedGame.resume] if the screen is set. You can allow the physics to be updated
-	 * again here.
-	 */
-	public override fun resume() {
-	}
+    /**
+     * This method is called by [AdvancedGame.resume] if the screen is set. You can allow the physics to be updated
+     * again here.
+     */
+    override fun resume() {
+    }
 
-	/**
-	 * This method is called when you change to another [Screen]. You can dispose some minor things here.
-	 */
-	public override fun hide() {
-	}
+    /**
+     * This method is called when you change to another [Screen]. You can dispose some minor things here.
+     */
+    override fun hide() {
+    }
 
-	/**
-	 * This method will be executed when you call ScreenManager.remove or [ScreenManager.dispose]. You can dispose the
-	 * things which you have loaded in [load] here.
-	 */
-	public override fun dispose() {
-	}
+    /**
+     * This method will be executed when you call ScreenManager.remove or [ScreenManager.dispose]. You can dispose the
+     * things which you have loaded in [load] here.
+     */
+    override fun dispose() {
+    }
 }
