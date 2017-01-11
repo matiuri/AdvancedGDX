@@ -21,6 +21,7 @@ package mati.advancedgdx.utils
 import com.badlogic.gdx.Application.ApplicationType.Android
 import com.badlogic.gdx.Application.ApplicationType.Desktop
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -51,7 +52,7 @@ fun Texture.split(width: Int): Array<TextureRegion> {
  *
  * @return An array of [Any]?
  */
-fun<T> Array<Array<T>>.to1D(): Array<Any?> {
+fun <T> Array<Array<T>>.to1D(): Array<Any?> {
     val size: Int = this.size * get(0).size
     var index: Int = 0
     val temp: Array<Any?> = arrayOfNulls(size)
@@ -61,6 +62,9 @@ fun<T> Array<Array<T>>.to1D(): Array<Any?> {
     return temp
 }
 
+/**
+ * Adds Capture Listener to an Actor and cancels the event
+ */
 fun Actor.addListener1(fun_: (e: ChangeEvent?, a: Actor?) -> Unit) {
     addCaptureListener(object : ChangeListener() {
         override fun changed(event: ChangeEvent?, actor: Actor?) {
@@ -70,6 +74,9 @@ fun Actor.addListener1(fun_: (e: ChangeEvent?, a: Actor?) -> Unit) {
     })
 }
 
+/**
+ * Adds Capture Listener to an Actor and doesn't cancel the event
+ */
 fun Actor.addListener2(fun_: (e: ChangeEvent?, a: Actor?) -> Unit) {
     addCaptureListener(object : ChangeListener() {
         override fun changed(event: ChangeEvent?, actor: Actor?) {
@@ -81,3 +88,5 @@ fun Actor.addListener2(fun_: (e: ChangeEvent?, a: Actor?) -> Unit) {
 fun isDesktop(): Boolean = Gdx.app.type == Desktop
 
 fun isAndroid(): Boolean = Gdx.app.type == Android
+
+fun glClearColor(color: Color) = Gdx.gl.glClearColor(color.r, color.g, color.b, color.a)

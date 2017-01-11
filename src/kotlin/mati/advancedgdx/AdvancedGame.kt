@@ -41,7 +41,7 @@ import kotlin.properties.Delegates
  *
  * You shouldn't override the other methods, because you can manage everything using [Screens][Screen].
  */
-open class AdvancedGame() : ApplicationAdapter() {
+open class AdvancedGame : ApplicationAdapter() {
     companion object Static {
         val log: Logger = Logger("log")
     }
@@ -72,13 +72,13 @@ open class AdvancedGame() : ApplicationAdapter() {
      */
     override fun create() {
         Thread.setDefaultUncaughtExceptionHandler({ thread, throwable ->
-            log.e("${thread.name}", "FATAL ERROR", throwable)
+            log.e(thread.name, "FATAL ERROR", throwable)
             System.exit(-1)
         })
 
         Gdx.app.logLevel = LOG_INFO
         log.init()
-        log.l("${this.javaClass.simpleName}", "Starting Game")
+        log.l(this.javaClass.simpleName, "Starting Game")
     }
 
     /**
@@ -124,7 +124,7 @@ open class AdvancedGame() : ApplicationAdapter() {
      * If you have to dispose something, override it and don't forget "super.dispose()"
      */
     override fun dispose() {
-        log.l("${this.javaClass.simpleName}", "Exiting Game")
+        log.l(this.javaClass.simpleName, "Exiting Game")
         scrManager.dispose()
         astManager.dispose()
     }
