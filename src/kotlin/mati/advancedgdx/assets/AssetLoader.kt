@@ -33,7 +33,7 @@ import kotlin.reflect.KClass
 class AssetLoader(private val game: AdvancedGame) : Disposable {
     private val map: MutableMap<String, String> = HashMap()
     private val manager: AssetManager = AssetManager()
-    private val screen: Class<LoadingScreen> = LoadingScreen::class.java
+    var screen: Class<out LoadingScreen> = LoadingScreen::class.java
 
     init {
         manager.setLoader(FreeTypeFontGenerator::class.java, FontGeneratorLoader(InternalFileHandleResolver()))
